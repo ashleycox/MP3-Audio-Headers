@@ -28,7 +28,7 @@ say -o "$SCRIPT_DIR/$FORMAT/$LINE.$FORMAT" "$LINE"
 done
 
    echo "-------------------"
-Echo "Converting files"
+Echo "Converting files to $BITDEPTH / $SAMPLERATE mp3"
    echo "-------------------"
 
 mkdir $OUTPUTDIR/mp3
@@ -58,16 +58,13 @@ do
    XXD -i $f $OUTPUTDIR/headers/${f%.*}.h
 done
 
-echo "creating header list"
-   echo "-------------------"
-
 cd $OUTPUTDIR/headers
-Ls > speechSamples.h
-LINES=$(cat speechSamples.h)
+Ls > ../speechSamples.h
+LINES=$(cat ../speechSamples.h)
 
 Echo "Creating the speech array"
 
-Echo "{nullptr, nullptr}};" > tmpArray.txt
+Echo "{nullptr, nullptr}};" > ../tmpArray.txt
 
 for LINE in $LINES
 do
@@ -78,24 +75,27 @@ FILENOCAPS=$(echo "$FILENOEXT" | tr '[:lower:]' '[:upper:]')
 Echo "adding $LINE to array"
    echo "-------------------"
 
-Echo '{"'$FILENOCAPS'", new MemoryStream('$FILENOEXT'_mp3, '$FILENOEXT'_mp3_len)},' | cat - tmpArray.txt > temp && mv temp tmpArray.txt
+Echo '{"'$FILENOCAPS'", new MemoryStream('$FILENOEXT'_mp3, '$FILENOEXT'_mp3_len)},' | cat - tmpArray.txt > temp && mv temp ../tmpArray.txt
 done
 
-echo "AudioDictionaryEntry MyAudioDictionaryValues[] = {" | cat - tmpArray.txt > temp && mv temp tmpArray.txt
-Mv tmpArray.txt speechArray.h
+echo "AudioDictionaryEntry MyAudioDictionaryValues[] = {" | cat - ../tmpArray.txt > temp && mv temp ../tmpArray.txt
+Mv ../tmpArray.txt ../speechArray.h
+
+echo "creating header list"
 
 for LINE in $LINES
 do
-    echo "#include \"$LINE\"" >> tmpSamples.txt
+    echo "#include \"/headers/$LINE\"" >> ../tmpSamples.txt
 done
-Mv tmpSamples.txt speechSamples.h
+Mv ../tmpSamples.txt ../speechSamples.h
 
    echo "-------------------"
-Echo "Adding pragma"
+Echo "Adding pragma and const"
    echo "-------------------"
 
 for i in $(find ./ -name '*.h');
 do
+echo -n "const " | cat - $i > /tmp/$i && mv /tmp/$i $i
 echo "#pragma once" | cat - $i > /tmp/$i && mv /tmp/$i $i
 done
 
