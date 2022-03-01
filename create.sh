@@ -114,7 +114,7 @@ Echo "adding $LINE to array"
 
 # Create the array entry
 
-Echo '{"'$FILENOCAPS'", new MemoryStream('$FILENOEXT'_mp3, '$FILENOEXT'_mp3_len)},' | cat - tmpArray.txt > temp && mv temp ../tmpArray.txt
+Echo '{"'$FILENOCAPS'", new MemoryStream('$FILENOEXT'_mp3, '$FILENOEXT'_mp3_len)},' | cat - ../tmpArray.txt > temp && mv temp ../tmpArray.txt
 done
 
 # Finally, add the first line that initialises the array to our file.
