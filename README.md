@@ -1,9 +1,9 @@
 # MP3 Audio Headers
  Generates speech samples and header files for Arduino TTS
 
-I created this bash script for use with the Arduino Simple TTS library by [Phil Schatzmann](https://github.com/pschatzmann/arduino-simple-tts). The script provides text to speech output using pre-recorded audio samples, and can utilise c headers stored in program memory to remove the necessity for any external storage on microcontrollers like the ESP32.
+I created this bash script for use with the Arduino Simple TTS library by [Phil Schatzmann](https://github.com/pschatzmann/arduino-simple-tts). The library provides text to speech output using pre-recorded audio samples, and can utilise c headers stored in program memory to remove the necessity for any external storage on microcontrollers like the ESP32.
 
-The script will take an input text file in which each line represents an individual sample. It creates AIFF or WAV files using the say command, converts them to mp3 using ffmpeg, uses xxd to produce c header files from those mp3s, and creates the necessary C array to use the files in a sketch with the library.
+This script will take an input text file in which each line represents an individual sample. It creates AIFF or WAV files using the say command, converts them to mp3 using ffmpeg, uses xxd to produce c header files from those mp3s, and creates the necessary C array to use the files in a sketch with the library.
 
 ##usage:
 create.sh outputdir format list samplerate bitdepth
